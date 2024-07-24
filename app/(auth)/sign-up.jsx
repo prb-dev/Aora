@@ -6,6 +6,7 @@ import FormField from "../../components/FormField.jsx";
 import CustomButton from "../../components/CustomButton.jsx";
 import { Link, router } from "expo-router";
 import { createUser } from "../../lib/appwrite.js";
+import { useGlobalContext } from "../../context/GlobalProvider.js";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -14,6 +15,7 @@ const SignUp = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const { setUser, setIsLoggedIn } = useGlobalContext();
 
   const submit = async () => {
     if (!form.email || !form.username || !form.password) {
@@ -27,6 +29,9 @@ const SignUp = () => {
         form.password,
         form.username
       );
+
+      setUser(response);
+      setIsLoggedIn(true);
 
       router.replace("/home");
     } catch (error) {
